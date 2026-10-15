@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}Invoice #{{ order.id }} - Jalaram Electric{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <!-- Print Trigger Button -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <a href="{% url 'my_orders' %}" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-left"></i> My Orders
+            </a>
+            <button onclick="window.print()" class="btn btn-dark btn-sm">
+                <i class="bi bi-printer"></i> Print Invoice / Receipt
+            </button>
+        </div>
+
+        <!-- Printable Invoice Box -->
+        <div class="card border shadow-sm p-4 bg-white" id="invoice">
+            <div class="border-bottom pb-3 mb-3 d-flex justify-content-between align-items-start">
+                <div>
+                    <h3 class="fw-bold text-dark mb-0">JALARAM ELECTRIC</h3>
+                    <small class="text-muted d-block">Retail & Wholesale Electrical Goods Suppliers</small>
+                    <small class="text-muted">Station Road, Rajkot, Gujarat - 360001 | Phone: +91 98765 43210</small>
+                </div>
+                <div class="text-end">
+                    <span class="badge {% if order.status == 'Completed' %}bg-success{% elif order.status == 'Ready' %}bg-info text-dark{% else %}bg-warning text-dark{% endif %} fs-6">
+                        {{ order.status }}
+                    </span>
+                    <h5 class="fw-bold text-muted mt-2 mb-0">Order #{{ order.id }}</h5>
+                    <small class="text-muted">{{ order.created_at|date:"d M Y, h:i A" }}</small>
+                </div>
+            </div>
+
+            <!-- Customer & Fulfillment Info -->
+            <div class="row mb-4">
+                <div class="col-6">
+                    <h6 class="text-uppercase text-muted fw-bold small">Billed To:</h6>
+                    <p class="mb-1"><strong>{{ order.full_name }}</strong></p>
+                    <p class="mb-1 small text-muted">Phone: {{ order.phone }}</p>
+                    <p class="mb-0 small text-muted">Account: {{ order.user.username }}</p>
+                </div>
+                <div class="col-6 text-end">
+                    <h6 class="text-uppercase text-muted fw-bold small">Fulfillment Details:</h6>
+                    <p class="mb-1">
+                        {% if order.fulfillment_type == 'pickup' %}
+                            <span class="badge bg-primary">In-Store Pickup</span>
+                        {% else %}
+                            <span class="badge bg-success">Home Delivery</span>
+                        {% endif %}
+                    </p>
+                    {% if order.fulfillment_type == 'delivery' %}
+                        <p class="mb-0 small text-muted">{{ order.delivery_address }}</p>
+                    {% else %}
+                        <p class="mb-0 small text-muted">Pickup Counter: Main Branch (Token #JL-{{ order.id }})</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Itemized Table -->
+            <div class="table-responsive mb-3">
+                <table class="table table-bordered align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Item Description</th>
+                            <th>Brand</th>
+                            <th class="text-center">Rate</th>
+                            <th class="text-center">Qty</th>
+                            <th class="text-end">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in order.items.all %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td><strong>{{ item.product.name }}</strong></td>
+                                <td>{{ item.product.brand }}</td>
+                                <td class="text-center">₹{{ item.price }}</td>
+                                <td class="text-center">{{ item.quantity }} {{ item.product.unit }}</td>
+                                <td class="text-end fw-bold">₹{{ item.subtotal }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="5" class="text-end">Total Amount:</th>
+                            <th class="text-end text-primary fs-5">₹{{ order.total_amount }}</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <div class="p-3 bg-light rounded text-center small text-muted">
+                <p class="mb-1">Payment: {{ order.payment_method }}</p>
+                <p class="mb-0">Thank you for purchasing from Jalaram Electric! Certified electrical accessories warranty as per manufacturer terms.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

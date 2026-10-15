@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block title %}Shopkeeper Dashboard - Jalaram Electric{% endblock %}
+
+{% block content %}
+<div class="row mb-3">
+    <div class="col-12">
+        <h2 class="fw-bold"><i class="bi bi-speedometer2 text-warning"></i> Storekeeper Control Panel</h2>
+        <p class="text-muted">Manage real-time inventory, daily prices, and incoming retail & contractor orders.</p>
+    </div>
+</div>
+
+<!-- Quick Stats Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm bg-primary text-white p-3">
+            <h6 class="text-uppercase small">Total Orders</h6>
+            <h2 class="fw-bold mb-0">{{ orders.count }}</h2>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm bg-danger text-white p-3">
+            <h6 class="text-uppercase small">Low Stock Alert</h6>
+            <h2 class="fw-bold mb-0">{{ low_stock_products|length }}</h2>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm bg-dark text-white p-3">
+            <h6 class="text-uppercase small">Total Inventory Items</h6>
+            <h2 class="fw-bold mb-0">{{ products.count }}</h2>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Orders Section -->
+    <div class="col-lg-6 mb-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-dark text-white fw-bold d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-box-seam me-1"></i> Customer Orders</span>
+                <span class="badge bg-warning text-dark">{{ orders.count }} Total</span>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive" style="max-height: 480px; overflow-y: auto;">
+                    <table class="table table-hover align-middle mb-0 small">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Order #</th>
+                                <th>Customer</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in orders %}
+                                <tr>
+                                    <td><strong>#{{ order.id }}</strong></td>
+                                    <td>{{ order.full_name }}<br><small class="text-muted">{{ order.phone }}</small></td>
+                                    <td>
+                                        {% if order.fulfillment_type == 'pickup' %}
+                                            <span class="badge bg-primary">Pickup</span>
+                                        {% else %}
+                                            <span class="badge bg-success">Delivery</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="fw-bold">₹{{ order.total_amount }}</td>
+                                    <td>
+                                        <form method="POST" action="{% url 'update_order_status' order.id %}" class="d-flex gap-1">
+                                            {% csrf_token %}
+                                            <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+                                                <option value="Pending" {% if order.status == 'Pending' %}selected{% endif %}>Pending</option>
+                                                <option value="Ready" {% if order.status == 'Ready' %}selected{% endif %}>Ready</option>
+                                                <option value="Completed" {% if order.status == 'Completed' %}selected{% endif %}>Completed</option>
+                                            </select>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'order_detail' order.id %}" class="btn btn-outline-dark btn-sm">Receipt</a>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="6" class="text-center py-4 text-muted">No orders placed yet.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inventory Stock & Price Management -->
+    <div class="col-lg-6 mb-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-dark text-white fw-bold d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-sliders me-1"></i> Quick Stock & Daily Price Updates</span>
+                <span class="badge bg-light text-dark">Instant Save</span>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive" style="max-height: 480px; overflow-y: auto;">
+                    <table class="table table-hover align-middle mb-0 small">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Item & Brand</th>
+                                <th>Retail (₹)</th>
+                                <th>Wholesale (₹)</th>
+                                <th>Stock</th>
+                                <th>Save</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for p in products %}
+                                <tr>
+                                    <td>
+                                        <strong>{{ p.name }}</strong><br>
+                                        <small class="text-muted">{{ p.brand }} | MOQ: {{ p.min_order_qty }}</small>
+                                        {% if p.is_low_stock %}
+                                            <span class="badge bg-danger">Low Stock</span>
+                                        {% endif %}
+                                    </td>
+                                    <form method="POST" action="{% url 'shopkeeper_dashboard' %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="product_id" value="{{ p.id }}">
+                                        <td style="width: 100px;">
+                                            <input type="number" step="0.5" name="retail_price" value="{{ p.retail_price }}" class="form-control form-control-sm text-center">
+                                        </td>
+                                        <td style="width: 100px;">
+                                            <input type="number" step="0.5" name="wholesale_price" value="{{ p.wholesale_price }}" class="form-control form-control-sm text-center">
+                                        </td>
+                                        <td style="width: 90px;">
+                                            <input type="number" name="stock" value="{{ p.stock }}" class="form-control form-control-sm text-center">
+                                        </td>
+                                        <td>
+                                            <button type="submit" class="btn btn-warning btn-sm fw-bold">
+                                                <i class="bi bi-check-lg"></i>
+                                            </button>
+                                        </td>
+                                    </form>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

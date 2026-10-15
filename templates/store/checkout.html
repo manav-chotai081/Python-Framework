@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block title %}Checkout - Jalaram Electric{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm p-4">
+            <h3 class="fw-bold mb-3"><i class="bi bi-shield-check text-success"></i> Secure Checkout</h3>
+            <p class="text-muted small">Choose your preferred fulfillment method and confirm contact details.</p>
+
+            <form method="POST">
+                {% csrf_token %}
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Full Name</label>
+                        <input type="text" name="full_name" class="form-control" value="{{ user.get_full_name|default:user.username }}" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Contact Phone Number</label>
+                        <input type="tel" name="phone" class="form-control" placeholder="10-digit mobile number" required>
+                    </div>
+
+                    <div class="col-12 mt-4">
+                        <label class="form-label fw-bold">Choose Fulfillment Method</label>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-check p-3 border rounded shadow-sm bg-light">
+                                    <input class="form-check-input" type="radio" name="fulfillment_type" id="fulfillment_pickup" value="pickup" checked onchange="toggleAddress(false)">
+                                    <label class="form-check-label fw-bold d-block" for="fulfillment_pickup">
+                                        <i class="bi bi-shop text-primary"></i> In-Store Pickup
+                                        <small class="d-block text-muted fw-normal">Collect directly from Jalaram Electric counter (Skip the waiting line).</small>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check p-3 border rounded shadow-sm bg-light">
+                                    <input class="form-check-input" type="radio" name="fulfillment_type" id="fulfillment_delivery" value="delivery" onchange="toggleAddress(true)">
+                                    <label class="form-check-label fw-bold d-block" for="fulfillment_delivery">
+                                        <i class="bi bi-truck text-success"></i> Home / Site Delivery
+                                        <small class="d-block text-muted fw-normal">Direct delivery to your residential or construction site address.</small>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12" id="address_container" style="display: none;">
+                        <label class="form-label fw-bold">Delivery Address</label>
+                        <textarea name="delivery_address" id="delivery_address" class="form-control" rows="3" placeholder="Plot / Flat No, Street, Landmark, City, Pincode"></textarea>
+                    </div>
+
+                    <div class="col-12 mt-4">
+                        <div class="p-3 bg-light rounded border d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="text-muted d-block small">Payment Method:</span>
+                                <strong>Cash on Delivery (COD) / Pay at Counter</strong>
+                            </div>
+                            <div class="text-end">
+                                <span class="text-muted d-block small">Payable Amount:</span>
+                                <h4 class="text-primary mb-0 fw-bold">₹{{ total }}</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 mt-4">
+                        <button type="submit" class="btn btn-warning w-100 py-2 fs-5 fw-bold shadow-sm">
+                            <i class="bi bi-check2-circle"></i> Place Order Now
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleAddress(show) {
+        var box = document.getElementById('address_container');
+        var addrInput = document.getElementById('delivery_address');
+        if (show) {
+            box.style.display = 'block';
+            addrInput.required = true;
+        } else {
+            box.style.display = 'none';
+            addrInput.required = false;
+        }
+    }
+</script>
+{% endblock %}

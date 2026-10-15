@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Report – Jalaram Electric Store</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 12pt;
+      color: #000;
+      background: #fff;
+      padding: 40px;
+      max-width: 900px;
+      margin: auto;
+      line-height: 1.6;
+    }
+    h1 { font-size: 20pt; text-align: center; margin-bottom: 6px; }
+    h2 { font-size: 14pt; margin-top: 24px; margin-bottom: 6px; border-bottom: 1px solid #000; padding-bottom: 4px; }
+    h3 { font-size: 12pt; margin-top: 14px; margin-bottom: 4px; }
+    .center { text-align: center; }
+    .cover { margin-bottom: 40px; }
+    .cover p { text-align: center; margin: 4px 0; }
+    hr { border: none; border-top: 2px solid #000; margin: 20px 0; }
+    table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+    th, td { border: 1px solid #555; padding: 6px 10px; text-align: left; font-size: 11pt; }
+    th { background: #e8e8e8; font-weight: bold; }
+    ul, ol { padding-left: 24px; margin: 6px 0; }
+    li { margin-bottom: 4px; }
+    pre, code {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 10pt;
+      background: #f5f5f5;
+      padding: 2px 6px;
+      border: 1px solid #ccc;
+    }
+    pre { padding: 10px; display: block; white-space: pre-wrap; margin: 8px 0; }
+    .section { margin-bottom: 20px; }
+    .page-break { page-break-before: always; }
+    @media print {
+      body { padding: 20px; }
+      .page-break { page-break-before: always; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="cover">
+  <br/><br/>
+  <h1>PROJECT REPORT</h1>
+  <br/>
+  <h2 class="center" style="border:none; font-size:16pt;">Jalaram Electric - Django E-Commerce Store</h2>
+  <br/>
+  <p><strong>Subject:</strong> Python Framework (ICT - Semester 5)</p>
+  <p><strong>University:</strong> Marwadi University</p>
+  <br/><br/>
+  <p><strong>Submitted by:</strong> Manav Chotai</p>
+  <p><strong>Enrollment No.:</strong> 92400133081</p>
+  <br/>
+  <p><strong>Submitted to:</strong> [Faculty Name]</p>
+  <br/>
+  <p><strong>Academic Year:</strong> 2025-2026</p>
+  <p><strong>Date of Submission:</strong> October 2026</p>
+</div>
+
+<hr/>
+
+<div class="section">
+  <h2>1. Project Title</h2>
+  <p><strong>Jalaram Electric - Online Electrical Products Store</strong></p>
+  <p>A Django-based web application for an electrical goods retail and wholesale store that provides dual-tier pricing, order management, and a shopkeeper dashboard.</p>
+</div>
+
+<div class="section">
+  <h2>2. Problem Statement</h2>
+  <p>Local electrical hardware shops typically manage inventory, orders, and pricing manually using paper registers or simple spreadsheets. This leads to errors in pricing (especially when handling both retail customers and bulk contractors/electricians), delays in order processing, and difficulty in tracking inventory levels. There is no unified platform where customers can browse products, add to cart, and place orders while the shop owner manages stock and updates order statuses.</p>
+  <p>This project addresses these challenges by providing a web-based system that:</p>
+  <ul>
+    <li>Maintains separate <strong>retail</strong> and <strong>wholesale</strong> pricing tiers.</li>
+    <li>Allows customers to register, browse, and place orders online.</li>
+    <li>Gives the shopkeeper a dashboard to manage products, stock levels, and order statuses.</li>
+    <li>Automatically tracks inventory and triggers low-stock alerts.</li>
+  </ul>
+</div>
+
+<div class="section">
+  <h2>3. Objectives</h2>
+  <ol>
+    <li>To develop a fully functional e-commerce web application using the Django Python framework.</li>
+    <li>To implement Django's MVT (Model-View-Template) architecture in a real-world scenario.</li>
+    <li>To demonstrate Django concepts: models, views, templates, forms, URL routing, sessions, and authentication.</li>
+    <li>To provide a dual-tier pricing system - Retail for regular customers and Wholesale for registered electricians/contractors.</li>
+    <li>To implement session-based cart functionality for product selection and checkout.</li>
+    <li>To provide order management with support for both in-store pickup and home delivery.</li>
+    <li>To build a shopkeeper dashboard for managing inventory, updating prices, and tracking order statuses.</li>
+    <li>To integrate Django's built-in user authentication system for secure login, registration, and logout.</li>
+  </ol>
+</div>
+
+<div class="section">
+  <h2>4. Key Features</h2>
+  <table>
+    <tr><th>#</th><th>Feature</th><th>Description</th></tr>
+    <tr><td>1</td><td>User Registration and Login</td><td>Customers register as Retail or Wholesale (Contractor/Electrician). Django's built-in auth system is used.</td></tr>
+    <tr><td>2</td><td>Dual-Tier Pricing</td><td>Products have separate retail and wholesale prices. Price shown depends on user's account type.</td></tr>
+    <tr><td>3</td><td>Product Catalog</td><td>Browse all products with category filter and keyword search.</td></tr>
+    <tr><td>4</td><td>Product Detail Page</td><td>View detailed product info including brand, unit, stock, and applicable price.</td></tr>
+    <tr><td>5</td><td>Session-based Cart</td><td>Add/remove products to cart without login; cart persists in the session.</td></tr>
+    <tr><td>6</td><td>Checkout and Order Placement</td><td>Authenticated users can place orders with delivery or in-store pickup option.</td></tr>
+    <tr><td>7</td><td>Order History</td><td>Customers can view their order history and individual order details/receipts.</td></tr>
+    <tr><td>8</td><td>Stock Management</td><td>Stock is automatically deducted when an order is placed. Low-stock alerts shown on dashboard.</td></tr>
+    <tr><td>9</td><td>Shopkeeper Dashboard</td><td>Staff-only page to view all orders, update order status, and update product stock/prices.</td></tr>
+    <tr><td>10</td><td>Django Admin Panel</td><td>Full CRUD on all models via Django's built-in admin interface.</td></tr>
+  </table>
+</div>
+
+<div class="section">
+  <h2>5. Technologies / Tools Used</h2>
+  <table>
+    <tr><th>Technology / Tool</th><th>Purpose</th></tr>
+    <tr><td>Python 3.x</td><td>Primary programming language</td></tr>
+    <tr><td>Django 6.1</td><td>Web framework (MVT architecture)</td></tr>
+    <tr><td>SQLite3</td><td>Default relational database for development</td></tr>
+    <tr><td>HTML5</td><td>Template structure and frontend markup</td></tr>
+    <tr><td>CSS3</td><td>Styling for web pages</td></tr>
+    <tr><td>Django Template Language (DTL)</td><td>Dynamic rendering of HTML pages</td></tr>
+    <tr><td>Django Sessions</td><td>Cart management without login</td></tr>
+    <tr><td>Django Auth</td><td>User registration, login, logout, and access control</td></tr>
+    <tr><td>VS Code</td><td>Code editor / IDE</td></tr>
+    <tr><td>Git and GitHub</td><td>Version control and project hosting</td></tr>
+  </table>
+</div>
+
+<div class="section page-break">
+  <h2>6. System Design</h2>
+
+  <h3>6.1 MVT Architecture</h3>
+  <p>The project follows Django's Model-View-Template (MVT) architecture:</p>
+  <ul>
+    <li><strong>Model:</strong> Defines database schema using Python classes (ORM). Located in store/models.py.</li>
+    <li><strong>View:</strong> Contains the business logic, processes requests, and returns responses. Located in store/views.py.</li>
+    <li><strong>Template:</strong> HTML files that render dynamic data returned from views. Located in templates/store/.</li>
+  </ul>
+
+  <h3>6.2 Project Structure</h3>
+  <pre>
+Python Framework/
+|-- jalaram_electric/        # Django project settings
+|   |-- settings.py
+|   |-- urls.py
+|   |-- wsgi.py
+|   +-- asgi.py
+|-- store/                   # Main Django app
+|   |-- models.py            # Database models
+|   |-- views.py             # View functions
+|   |-- urls.py              # URL patterns
+|   |-- forms.py             # Django forms
+|   |-- admin.py             # Admin panel config
+|   +-- migrations/          # Database migrations
+|-- templates/               # HTML templates
+|   |-- base.html            # Base layout
+|   +-- store/
+|       |-- home.html
+|       |-- product_detail.html
+|       |-- cart.html
+|       |-- checkout.html
+|       |-- order_detail.html
+|       |-- my_orders.html
+|       |-- dashboard.html
+|       |-- register.html
+|       +-- login.html
+|-- static/                  # Static CSS/JS files
+|-- manage.py
+|-- requirements.txt
++-- db.sqlite3               # SQLite database
+  </pre>
+
+  <h3>6.3 URL Routing</h3>
+  <table>
+    <tr><th>URL</th><th>View Function</th><th>Description</th></tr>
+    <tr><td>/</td><td>home</td><td>Product catalog / storefront</td></tr>
+    <tr><td>/product/pk/</td><td>product_detail</td><td>Product detail page</td></tr>
+    <tr><td>/cart/</td><td>cart_view</td><td>View shopping cart</td></tr>
+    <tr><td>/cart/add/pk/</td><td>add_to_cart</td><td>Add product to cart</td></tr>
+    <tr><td>/cart/remove/pk/</td><td>remove_from_cart</td><td>Remove item from cart</td></tr>
+    <tr><td>/checkout/</td><td>checkout</td><td>Checkout and order placement</td></tr>
+    <tr><td>/order/pk/</td><td>order_detail</td><td>Order receipt / detail</td></tr>
+    <tr><td>/my-orders/</td><td>my_orders</td><td>Customer order history</td></tr>
+    <tr><td>/dashboard/</td><td>shopkeeper_dashboard</td><td>Staff-only dashboard</td></tr>
+    <tr><td>/register/</td><td>user_register</td><td>User registration</td></tr>
+    <tr><td>/login/</td><td>user_login</td><td>User login</td></tr>
+    <tr><td>/logout/</td><td>user_logout</td><td>User logout</td></tr>
+  </table>
+</div>
+
+<div class="section page-break">
+  <h2>7. Database Schema</h2>
+  <p>All models are in store/models.py and use Django's ORM with SQLite3 as the database backend.</p>
+
+  <h3>7.1 CustomerProfile</h3>
+  <table>
+    <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+    <tr><td>user</td><td>OneToOneField (User)</td><td>Linked to Django's built-in User model</td></tr>
+    <tr><td>customer_type</td><td>CharField</td><td>'retail' or 'contractor' (wholesale)</td></tr>
+    <tr><td>phone</td><td>CharField</td><td>Contact number</td></tr>
+    <tr><td>business_name</td><td>CharField</td><td>Firm/Electrician name (for contractors)</td></tr>
+    <tr><td>address</td><td>TextField</td><td>Customer address</td></tr>
+  </table>
+
+  <h3>7.2 Category</h3>
+  <table>
+    <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+    <tr><td>name</td><td>CharField</td><td>Category name (e.g., Switches, Wires)</td></tr>
+    <tr><td>description</td><td>TextField</td><td>Optional description</td></tr>
+  </table>
+
+  <h3>7.3 Product</h3>
+  <table>
+    <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+    <tr><td>category</td><td>ForeignKey (Category)</td><td>Product belongs to a category</td></tr>
+    <tr><td>name</td><td>CharField</td><td>Product name</td></tr>
+    <tr><td>brand</td><td>CharField</td><td>Brand name</td></tr>
+    <tr><td>description</td><td>TextField</td><td>Product description</td></tr>
+    <tr><td>retail_price</td><td>DecimalField</td><td>Price for regular customers</td></tr>
+    <tr><td>wholesale_price</td><td>DecimalField</td><td>Price for contractors</td></tr>
+    <tr><td>stock</td><td>IntegerField</td><td>Available stock quantity</td></tr>
+    <tr><td>low_stock_limit</td><td>IntegerField</td><td>Threshold for low-stock alert</td></tr>
+    <tr><td>min_order_qty</td><td>IntegerField</td><td>Minimum order quantity</td></tr>
+    <tr><td>unit</td><td>CharField</td><td>Unit of measurement (Piece, Meter, Box)</td></tr>
+  </table>
+
+  <h3>7.4 Order</h3>
+  <table>
+    <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+    <tr><td>user</td><td>ForeignKey (User)</td><td>Customer who placed the order</td></tr>
+    <tr><td>full_name</td><td>CharField</td><td>Delivery name</td></tr>
+    <tr><td>phone</td><td>CharField</td><td>Contact phone</td></tr>
+    <tr><td>fulfillment_type</td><td>CharField</td><td>'pickup' or 'delivery'</td></tr>
+    <tr><td>delivery_address</td><td>TextField</td><td>Address (required for delivery)</td></tr>
+    <tr><td>payment_method</td><td>CharField</td><td>Payment method description</td></tr>
+    <tr><td>total_amount</td><td>DecimalField</td><td>Total order value</td></tr>
+    <tr><td>status</td><td>CharField</td><td>Pending / Ready / Completed</td></tr>
+    <tr><td>created_at</td><td>DateTimeField</td><td>Auto timestamp when order placed</td></tr>
+  </table>
+
+  <h3>7.5 OrderItem</h3>
+  <table>
+    <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+    <tr><td>order</td><td>ForeignKey (Order)</td><td>Parent order</td></tr>
+    <tr><td>product</td><td>ForeignKey (Product)</td><td>Product ordered</td></tr>
+    <tr><td>quantity</td><td>IntegerField</td><td>Quantity ordered</td></tr>
+    <tr><td>price</td><td>DecimalField</td><td>Price at time of order (snapshot)</td></tr>
+  </table>
+</div>
+
+<div class="section page-break">
+  <h2>8. Implementation Details</h2>
+
+  <h3>8.1 Models (store/models.py)</h3>
+  <p>Five models are defined using Django ORM: CustomerProfile, Category, Product, Order, and OrderItem. Each model has appropriate fields, relationships (ForeignKey, OneToOneField), and helper properties (e.g., is_low_stock, subtotal).</p>
+
+  <h3>8.2 Views (store/views.py)</h3>
+  <p>The application has 12 view functions implementing all major features:</p>
+  <ul>
+    <li><strong>home()</strong> - Renders the product catalog with category filter and keyword search.</li>
+    <li><strong>product_detail()</strong> - Shows a single product with the applicable price tier.</li>
+    <li><strong>add_to_cart() / cart_view() / remove_from_cart()</strong> - Session-based cart management.</li>
+    <li><strong>checkout()</strong> - Processes the order form, creates Order and OrderItem records, deducts stock. Requires login (@login_required).</li>
+    <li><strong>order_detail() / my_orders()</strong> - Customer views for order receipt and history.</li>
+    <li><strong>shopkeeper_dashboard()</strong> - Staff-only view with all orders and quick stock/price update. Uses @user_passes_test decorator.</li>
+    <li><strong>update_order_status()</strong> - Staff-only POST endpoint to change order status.</li>
+    <li><strong>user_register() / user_login() / user_logout()</strong> - Authentication views using Django's built-in auth.</li>
+  </ul>
+
+  <h3>8.3 Templates (templates/store/)</h3>
+  <p>All templates extend base.html using Django's template inheritance ({% extends %} and {% block %}). Templates use:</p>
+  <ul>
+    <li>Template variables: {{ variable }}</li>
+    <li>Template tags: {% for %}, {% if %}, {% url %}, {% csrf_token %}</li>
+    <li>Filters: {{ price|floatformat:2 }}</li>
+    <li>Django messages framework for success/error notifications</li>
+  </ul>
+
+  <h3>8.4 Forms (store/forms.py)</h3>
+  <p>Two forms are defined:</p>
+  <ul>
+    <li><strong>RegisterForm</strong> - Extends Django's ModelForm for User. Adds custom fields: password, customer_type, phone, business_name.</li>
+    <li><strong>ProductQuickUpdateForm</strong> - ModelForm for quick price/stock update from dashboard.</li>
+  </ul>
+
+  <h3>8.5 User Management</h3>
+  <p>User management uses Django's built-in django.contrib.auth system:</p>
+  <ul>
+    <li>Registration creates both a User and a linked CustomerProfile.</li>
+    <li>Login uses AuthenticationForm and authenticate()/login().</li>
+    <li>Views are protected with @login_required and @user_passes_test decorators.</li>
+    <li>Wholesale pricing is controlled by the customer_type in CustomerProfile.</li>
+  </ul>
+
+  <h3>8.6 Database Integration</h3>
+  <p>SQLite3 is used as the database (default Django database). Database operations use Django ORM:</p>
+  <ul>
+    <li>Model.objects.all(), .filter(), .get(), .create(), .save()</li>
+    <li>ORM relationships: ForeignKey, OneToOneField with on_delete=CASCADE</li>
+    <li>Migrations managed via python manage.py makemigrations and migrate</li>
+  </ul>
+</div>
+
+<div class="section page-break">
+  <h2>9. Expected / Achieved Outcome</h2>
+  <table>
+    <tr><th>Expected Outcome</th><th>Status</th></tr>
+    <tr><td>Functional e-commerce website for an electrical store</td><td>Achieved</td></tr>
+    <tr><td>Dual-tier pricing (retail vs wholesale)</td><td>Achieved</td></tr>
+    <tr><td>User registration with account type selection</td><td>Achieved</td></tr>
+    <tr><td>Session-based shopping cart (works without login)</td><td>Achieved</td></tr>
+    <tr><td>Order placement with delivery / pickup option</td><td>Achieved</td></tr>
+    <tr><td>Auto stock deduction on order placement</td><td>Achieved</td></tr>
+    <tr><td>Low-stock alerts on shopkeeper dashboard</td><td>Achieved</td></tr>
+    <tr><td>Shopkeeper dashboard to manage orders and stock</td><td>Achieved</td></tr>
+    <tr><td>Digital order receipt for customers</td><td>Achieved</td></tr>
+    <tr><td>Django admin integration for full CRUD</td><td>Achieved</td></tr>
+    <tr><td>Secure login/logout with access control</td><td>Achieved</td></tr>
+  </table>
+  <br/>
+  <p>The project successfully demonstrates all key Django concepts required by the ICT Semester 5 Python Framework syllabus: views, templates, models, forms, database integration, and user management.</p>
+</div>
+
+<div class="section">
+  <h2>10. Testing Results</h2>
+  <table>
+    <tr><th>Test Case</th><th>Input</th><th>Expected Result</th><th>Result</th></tr>
+    <tr><td>Register new retail user</td><td>Username, password, type=retail</td><td>Account created, redirected to home</td><td>Pass</td></tr>
+    <tr><td>Register contractor user</td><td>Username, type=contractor, business name</td><td>Account created with wholesale access</td><td>Pass</td></tr>
+    <tr><td>Login with valid credentials</td><td>Correct username/password</td><td>Logged in, redirect to home</td><td>Pass</td></tr>
+    <tr><td>Login with wrong password</td><td>Incorrect password</td><td>Error message shown</td><td>Pass</td></tr>
+    <tr><td>Browse products by category</td><td>Select category filter</td><td>Only products of that category shown</td><td>Pass</td></tr>
+    <tr><td>Search product by keyword</td><td>Enter product name in search</td><td>Matching products shown</td><td>Pass</td></tr>
+    <tr><td>Add product to cart</td><td>Click Add to Cart</td><td>Product added, cart count updated</td><td>Pass</td></tr>
+    <tr><td>Wholesale pricing for contractor</td><td>Login as contractor, view product</td><td>Wholesale price displayed</td><td>Pass</td></tr>
+    <tr><td>Place order (pickup)</td><td>Checkout with pickup option</td><td>Order created, stock deducted</td><td>Pass</td></tr>
+    <tr><td>Place order (delivery)</td><td>Checkout with delivery + address</td><td>Order created with address stored</td><td>Pass</td></tr>
+    <tr><td>View order receipt</td><td>Click on order ID</td><td>Order details shown with all items</td><td>Pass</td></tr>
+    <tr><td>Shopkeeper updates order status</td><td>Staff changes status to Ready</td><td>Status updated in DB</td><td>Pass</td></tr>
+    <tr><td>Access dashboard without staff login</td><td>Regular user visits /dashboard/</td><td>Redirected to login</td><td>Pass</td></tr>
+    <tr><td>Low-stock alert on dashboard</td><td>Product stock below low_stock_limit</td><td>Alert shown in dashboard</td><td>Pass</td></tr>
+  </table>
+</div>
+
+<div class="section">
+  <h2>11. Conclusion</h2>
+  <p>The Jalaram Electric Django Store project successfully demonstrates the practical implementation of a complete web application using the Django Python framework. The application covers all the major Django concepts mandated by the syllabus: models, views, templates, forms, database integration, and user management.</p>
+  <p style="margin-top:8px;">The project addresses a real-world business problem faced by local electrical stores by providing a dual-pricing e-commerce platform, inventory management, and an order tracking system. All expected features were implemented and tested successfully.</p>
+  <p style="margin-top:8px;">This project has provided hands-on experience in full-stack web development using Django's MVT architecture, ORM-based database operations, session management, and Django's built-in authentication system.</p>
+</div>
+
+<div class="section">
+  <h2>12. GitHub Repository</h2>
+  <p><strong>Repository Name:</strong> python-framework</p>
+  <p><strong>Folder:</strong> project/</p>
+  <p><strong>GitHub Link:</strong> https://github.com/[YOUR_USERNAME]/python-framework</p>
+  <p><em>(Replace [YOUR_USERNAME] with your GitHub username after uploading)</em></p>
+</div>
+
+<div class="section">
+  <h2>References</h2>
+  <ul>
+    <li>Django Official Documentation - https://docs.djangoproject.com/</li>
+    <li>Python Official Documentation - https://docs.python.org/3/</li>
+    <li>MDN Web Docs - HTML/CSS Reference - https://developer.mozilla.org/</li>
+    <li>SQLite Documentation - https://www.sqlite.org/docs.html</li>
+  </ul>
+</div>
+
+<br/>
+<hr/>
+<p class="center"><em>Submitted by: Manav Chotai | Enrollment No.: 92400133081 | Marwadi University | ICT Sem-5 Python Framework</em></p>
+
+</body>
+</html>
